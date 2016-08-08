@@ -1,5 +1,5 @@
 # CDPVideoRecord
-## 美颜相机，并可以在录制时随时切换摄像头和开关美颜功能。
+## 美颜录制，并可以在录制时随时切换摄像头和开关美颜功能。
 An video camera,you can have realtime of a beautify,and change camera position.Details see demo.
 
 ## init初始化
