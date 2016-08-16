@@ -45,6 +45,8 @@
         _isFullScreen=isFullScreen;
         _superView=superView;
         
+        _turnOnFlash=NO;
+        
         [self createVideoRecordWithFrame:frame];
         
     }
@@ -175,6 +177,34 @@
         [_cropFilter addTarget:_movieWriter];
     }
 }
+#pragma mark - 开启/关闭闪光灯
+-(void)setTurnOnFlash:(BOOL)turnOnFlash{
+    
+    AVCaptureDevice *device = _videoCamera.inputCamera;
+
+    if ([device hasTorch] && [device hasFlash]){
+        
+        _turnOnFlash=turnOnFlash;
+        
+        [device lockForConfiguration:nil];
+        if (_turnOnFlash) {
+            [device setTorchMode:AVCaptureTorchModeOn];
+            [device setFlashMode:AVCaptureFlashModeOn];
+        } else {
+            [device setTorchMode:AVCaptureTorchModeOff];
+            [device setFlashMode:AVCaptureFlashModeOff];
+        }
+        [device unlockForConfiguration];
+    }
+    else{
+        _turnOnFlash=NO;
+        CDPLog(@"CDPVideoRecord:当前摄像头检测不到闪光灯");
+        
+        if ([_delegate respondsToSelector:@selector(turnOffFlash)]) {
+            [_delegate turnOffFlash];
+        }
+    }
+}
 #pragma mark - 其他方法
 //当前摄像头位置(前置或后置)
 -(AVCaptureDevicePosition)getCurrentCameraPosition{
@@ -183,6 +213,10 @@
 //改变当前启用的摄像头位置(前置和后置摄像头切换)
 -(void)changeCameraPosition{
     [_videoCamera rotateCamera];
+    
+    if (_turnOnFlash==YES) {
+        [self setTurnOnFlash:_turnOnFlash];
+    }
 }
 
 
