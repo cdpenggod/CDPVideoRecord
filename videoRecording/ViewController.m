@@ -13,12 +13,13 @@
 #define SWIDTH   [UIScreen mainScreen].bounds.size.width
 #define SHEIGHT  [UIScreen mainScreen].bounds.size.height
 
-@interface ViewController () {
+@interface ViewController () <CDPVideoRecordDelegate> {
     
     CDPVideoRecord *_videoRecord;
     
     UIButton *_recordBt;//录制开关
     UIButton *_beautifyBt;//美颜开关
+    UIButton *_flashBt;//闪光灯开关
     UIButton *_cameraSwitchBt;//摄像头切换
 }
 
@@ -38,8 +39,19 @@
                                           openBeautify:YES
                                           isFullScreen:YES
                                         addToSuperview:self.view];
+    //看需求设置代理(可选)
+    _videoRecord.delegate=self;
     
-    
+    //闪光灯开关
+    _flashBt=[[UIButton alloc] initWithFrame:CGRectMake(0,SHEIGHT-150,120,30)];
+    _flashBt.backgroundColor=[UIColor redColor];
+    [_flashBt setTitle:@"开启闪光灯" forState:UIControlStateNormal];
+    [_flashBt setTitle:@"关闭闪光灯" forState:UIControlStateSelected];
+    [_flashBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_flashBt setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [_flashBt addTarget:self action:@selector(flashSwitch:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_flashBt];
+
     //摄像头切换
     _cameraSwitchBt=[[UIButton alloc] initWithFrame:CGRectMake(0,SHEIGHT-110,120,30)];
     _cameraSwitchBt.backgroundColor=[UIColor redColor];
@@ -72,10 +84,24 @@
     [self.view addSubview:_recordBt];
     
 }
+#pragma mark - CDPVideoRecordDelegate
+//闪光灯关闭(仅当当前摄像头检测不到闪光灯时调用)
+-(void)turnOffFlash{
+    _flashBt.selected=NO;
+}
 #pragma mark - 点击事件
+//开关闪光灯
+-(void)flashSwitch:(UIButton *)sender{
+    //开关闪光灯功能
+    //因为前置摄像头无闪光灯，所以先进行turnOnFlash改变，然后sender状态根据turnOnFlash实时状态改变
+    _videoRecord.turnOnFlash=!_videoRecord.turnOnFlash;
+    
+    sender.selected=_videoRecord.turnOnFlash;
+}
 //转换摄像头
 -(void)cameraSwitch:(UIButton *)sender{
     //切换摄像头位置
+    //如果切换时闪光灯开启中，切换后会自动检测并改变闪光灯状态
     [_videoRecord changeCameraPosition];
     
     //判断当前摄像头位置
