@@ -11,8 +11,26 @@
 
 #import "GPUImage.h"
 
+
+@protocol CDPVideoRecordDelegate <NSObject>
+
+@optional
+
+/**
+ *  闪光灯关闭(仅当当前摄像头检测不到闪光灯时调用)
+ */
+-(void)turnOffFlash;
+
+@end
+
+
+
+
+
 @interface CDPVideoRecord : NSObject
 
+
+@property (nonatomic,weak) id <CDPVideoRecordDelegate> delegate;
 
 /**
  *  显示当前的镜头画面view(不会用的话不要乱改参数)
@@ -23,6 +41,12 @@
  *  是否打开美颜
  */
 @property (nonatomic,assign) BOOL openBeautify;
+
+/**
+ *  是否打开闪光灯(默认为NO)
+ *  (因为前置摄像头无闪光灯,所以如果检测不到闪光灯,则turnOnFlash自动置为NO,且会调用-(void)turnOffFlash代理方法)
+ */
+@property (nonatomic,assign) BOOL turnOnFlash;
 
 /**
  *  判断是否正在进行录制
@@ -58,6 +82,7 @@
 
 /**
  *  改变当前启用的摄像头位置(前置和后置摄像头切换)
+ *  如果改变时闪光灯开启中，则改变后会自动检测并改变闪光灯状态
  */
 -(void)changeCameraPosition;
 
