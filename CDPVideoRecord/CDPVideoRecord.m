@@ -13,6 +13,9 @@
 //最终合成视频地址
 #define OutputPath [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/CDPVideoRecordMovie.mp4"]
 
+#define CDPSWIDTH   [UIScreen mainScreen].bounds.size.width
+#define CDPSHEIGHT  [UIScreen mainScreen].bounds.size.height
+
 #ifdef DEBUG
 #    define CDPLog(fmt,...) NSLog(fmt,##__VA_ARGS__)
 #else
@@ -90,7 +93,13 @@
     
     NSURL *movieURL = [NSURL fileURLWithPath:OutputPath];
     
-    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:(_isFullScreen==YES)?[UIScreen mainScreen].bounds.size:CGSizeMake(640,640)];
+    CGFloat originScale=2208.0/1242.0;
+    CGFloat currentScale=CDPSHEIGHT/CDPSWIDTH;
+    
+    CGFloat fullHeight=(currentScale>originScale)?2208.0:CDPSHEIGHT;
+    CGFloat fullWidth=(currentScale>originScale)?1242.0:CDPSWIDTH;
+    
+    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:(_isFullScreen==YES)?CGSizeMake(fullWidth,fullHeight):CGSizeMake(640,640)];
     _movieWriter.encodingLiveVideo = YES;
     _movieWriter.shouldPassthroughAudio = YES;
     _movieWriter.hasAudioTrack=YES;
