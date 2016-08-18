@@ -6,6 +6,7 @@ An video camera,you can have realtime of a beautify,and change camera position,o
 ####  CDPVideoEditor: https://github.com/cdpenggod/CDPVideoEditor.git
 ####  GPUImage: https://github.com/BradLarson/GPUImage.git
 
+# Simple instructions
 ## init初始化
 -(instancetype)initWithFrame:(CGRect)frame cameraPosition:(AVCaptureDevicePosition)cameraPosition openBeautify:(BOOL)openBeautify isFullScreen:(BOOL)isFullScreen addToSuperview:(UIView *)superView;
 
