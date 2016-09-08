@@ -93,11 +93,11 @@
     
     NSURL *movieURL = [NSURL fileURLWithPath:OutputPath];
     
-    CGFloat originScale=2208.0/1242.0;
+    CGFloat originScale=960.0/540.0;
     CGFloat currentScale=CDPSHEIGHT/CDPSWIDTH;
     
-    CGFloat fullHeight=(currentScale>originScale)?2208.0:CDPSHEIGHT;
-    CGFloat fullWidth=(currentScale>originScale)?1242.0:CDPSWIDTH;
+    CGFloat fullHeight=(currentScale>originScale)?960.0:CDPSHEIGHT;
+    CGFloat fullWidth=(currentScale>originScale)?540.0:CDPSWIDTH;
     
     _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:(_isFullScreen==YES)?CGSizeMake(fullWidth,fullHeight):CGSizeMake(640,640)];
     _movieWriter.encodingLiveVideo = YES;
