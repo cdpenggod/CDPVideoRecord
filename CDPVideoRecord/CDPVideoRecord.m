@@ -124,7 +124,8 @@
     [_cropFilter removeTarget:_movieWriter];
     [_filterGroup removeTarget:_movieWriter];
     [_movieWriter finishRecording];
-    
+    [_videoCamera stopCameraCapture];
+
     if (isSave==YES) {
         [CDPVideoEditor exportWithVideoUrl:[NSURL fileURLWithPath:OutputPath] saveToLibrary:YES exportQuality:CDPVideoEditorExportQuality640x480];
     }
