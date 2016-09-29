@@ -70,7 +70,7 @@
 -(void)startRecording;
 
 /**
- *  结束录制(返回值为最终合成视频URL)
+ *  结束录制(返回值为最终合成视频URL,但并不会停止捕捉摄像头,如需停止调用摄像头使用stopCameraCapture)
  *  isSave  是否存入本地照片库
  */
 -(NSURL *)finishRecordingAndSaveToLibrary:(BOOL)isSave;
