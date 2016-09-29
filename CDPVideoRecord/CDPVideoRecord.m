@@ -81,7 +81,7 @@
     }
     
     //开始捕捉camera
-    [_videoCamera startCameraCapture];
+    [self startCameraCapture];
 }
 #pragma mark - 开始/结束录制
 //开始录制
@@ -124,7 +124,6 @@
     [_cropFilter removeTarget:_movieWriter];
     [_filterGroup removeTarget:_movieWriter];
     [_movieWriter finishRecording];
-    [_videoCamera stopCameraCapture];
 
     if (isSave==YES) {
         [CDPVideoEditor exportWithVideoUrl:[NSURL fileURLWithPath:OutputPath] saveToLibrary:YES exportQuality:CDPVideoEditorExportQuality640x480];
@@ -226,6 +225,24 @@
     
     if (_turnOnFlash==YES) {
         [self setTurnOnFlash:_turnOnFlash];
+    }
+}
+//开始捕捉摄像头(需要摄像头并显示图像时调用,即对摄像头添加引用)
+-(void)startCameraCapture{
+    if (_videoCamera) {
+        [_videoCamera startCameraCapture];
+    }
+    else{
+        CDPLog(@"CDPVideoRecord:当前videoCamera为空");
+    }
+}
+//停止捕捉摄像头(可在不用摄像头时调用,去掉对摄像头的引用)
+-(void)stopCameraCapture{
+    if (_videoCamera) {
+        [_videoCamera stopCameraCapture];
+    }
+    else{
+        CDPLog(@"CDPVideoRecord:当前videoCamera为空");
     }
 }
 
