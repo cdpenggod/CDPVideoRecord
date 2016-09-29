@@ -86,7 +86,15 @@
  */
 -(void)changeCameraPosition;
 
+/**
+ *  开始捕捉摄像头(需要摄像头并显示图像时调用,即对摄像头添加引用)
+ */
+-(void)startCameraCapture;
 
+/**
+ *  停止捕捉摄像头(可在不用摄像头时调用,去掉对摄像头的引用)
+ */
+-(void)stopCameraCapture;
 
 
 
