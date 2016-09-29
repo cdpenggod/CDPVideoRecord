@@ -84,6 +84,10 @@
     [self.view addSubview:_recordBt];
     
 }
+-(void)dealloc{
+    //停止捕捉摄像头
+    [_videoRecord stopCameraCapture];
+}
 #pragma mark - CDPVideoRecordDelegate
 //闪光灯关闭(仅当当前摄像头检测不到闪光灯时调用)
 -(void)turnOffFlash{
@@ -117,7 +121,7 @@
 //开关录制
 -(void)recordClick:(UIButton *)sender{
     if (sender.selected==YES) {
-        //结束录制
+        //结束录制(并不会停止对摄像头的捕捉)
         [_videoRecord finishRecordingAndSaveToLibrary:YES];
     }
     else{
